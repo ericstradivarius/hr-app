@@ -1,0 +1,136 @@
+.content-tables.padding-sides.col-md-10
+    h3 Campaign:
+     .page-title {{ $singleCampaignCtrl.singleCampaignData.name }}
+    p Bellow you'll find all your recruiting campaigns:
+    .table-responsive
+        table.table.table-bordered
+            thead
+                tr
+                    th.campaign-name  <i class="fa fa-newspaper-o" aria-hidden="true"></i> Campaign name
+                    th.campaign-description <i class="fa fa-bars" aria-hidden="true"></i> Description
+                    th.campaign-period <i class="fa fa-calendar-check-o" aria-hidden="true"></i> Period
+                    th.campaign-jobs <i class="fa fa-id-badge" aria-hidden="true"></i> Openings
+                    th.campaign-candidates <i class="fa fa-user-o" aria-hidden="true"></i> Candidates
+                    th.campaign-status <i class="fa fa-check" aria-hidden="true"></i> Status
+                    th.campaign-edit Actions
+
+            tbody
+                tr
+                    td {{ $singleCampaignCtrl.singleCampaignData.name }}
+                    td {{ $singleCampaignCtrl.singleCampaignData.description }}
+                    td {{ $singleCampaignCtrl.singleCampaignData.start_date | dateToISO | date : 'd MMM yyyy'}} - {{ $singleCampaignCtrl.singleCampaignData.end_date | dateToISO | date : 'd MMM yyyy'}}
+                    td {{ $singleCampaignCtrl.singleCampaignData.available_jobs }}
+                    td {{ $singleCampaignCtrl.singleCampaignData.candidates.length }}
+                    td {{ $singleCampaignCtrl.singleCampaignData.status }}
+                    td.actions-buttons
+                       a(data-toggle="modal", data-target="#editCampaignModal")
+                        i.fa.fa-pencil(aria-hidden="true")
+                        span edit
+                       a.delete-button( data-toggle="modal", data-target="#deleteMyCampaign")
+                        i.fa.fa-trash-o(aria-hidden='true')
+                        span delete
+
+.content-tables.padding-sides.col-md-10
+    h3 Displaying {{$singleCampaignCtrl.singleCampaignCandidates.length}} / {{$singleCampaignCtrl.singleCampaignData.candidates.length}} candidates
+    p Bellow you'll find all candidates from the current campaign
+    .table-responsive
+        table.table.table-bordered
+            thead
+                tr
+                    th.candidate-avatar Avatar
+                    th.candidate-name <i class="fa fa-id-card-o" aria-hidden="true"></i> Full name
+                    th.candidate-dob <i class="fa fa-calendar-check-o" aria-hidden="true"></i> Date of birth
+                    th.candidate-phone <i class="fa fa-phone" aria-hidden="true"></i> Phone
+                    th.candidate-email <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Email
+                    th.candidate-status <i class="fa fa-crop" aria-hidden="true"></i> Stage
+                    th.candidate-status <i class="fa fa-handshake-o" aria-hidden="true"></i> Status
+                    th.candidate-resume Resume
+            tbody
+                tr(ng-repeat='singleCandidate in $singleCampaignCtrl.singleCampaignCandidates')
+                    td.candidate-avatar
+                        img(src='http://via.placeholder.com/50x50', alt='Candidate Avatar')
+                        //generate-initials(initials='singleCandidate.name')
+                    td.single-candidate(ui-sref="single-candidate( {id:  {{ singleCandidate.id }} } )") {{ singleCandidate.first_name }} {{ singleCandidate.last_name }}
+                    td {{ singleCandidate.dob | dateToISO | date : 'd MMM yyyy' }}
+                    td {{ singleCandidate.phone }}
+                    td {{ singleCandidate.email }}
+                    td {{ singleCandidate.stage }}
+                    td {{ singleCandidate.status }}
+                    td
+                        i.fa.fa-file-pdf-o(aria-hidden='true')
+                        span.viewPdf Download CV
+    .pagination
+
+        ul(ng-hide="$singleCampaignCtrl.singleCampaignCandidates.length < 3")
+            li
+                a(ng-click='$singleCampaignCtrl.getCandidatesSingleCampaign($singleCampaignCtrl.singleCampaignData.id, $singleCampaignCtrl.currentPage - 1)')
+                    i.fa.fa-angle-left(aria-hidden='true')
+            li
+                a(ng-click='$singleCampaignCtrl.getCandidatesSingleCampaign($singleCampaignCtrl.singleCampaignData.id, $singleCampaignCtrl.currentPage + 1)')
+                    i.fa.fa-angle-right(aria-hidden='true')
+
+// Edit campaign Modal
+#editCampaignModal.modal.fade(role='dialog')
+    .modal-dialog
+        // Modal content
+        .modal-content
+            .modal-header
+                button.close(type='button', data-dismiss='modal') ×
+                h4.modal-title Edit campaign: {{$singleCampaignCtrl.singleCampaignData.name}}
+            .modal-body.edit-campaign
+                .col-md-12
+                    label(for='name') Name
+                    input#name.form-control.input-control(type='text', ng-model='$singleCampaignCtrl.singleCampaignData.name')
+                .col-md-12
+                    .col-md-5.strip-padding
+                        label(for='start_date') Starts at
+                        .input-group(moment-picker='ctrl.datepicker.start_date', min-view='month', ng-model='$singleCampaignCtrl.singleCampaignData.start_date', today='true', format='YYYY-MM-DD', id='start_date')
+                            span.input-group-addon
+                                i.material-icons date_range
+                            input.form-control(placeholder='Select a start date', ng-value='$singleCampaignCtrl.singleCampaignData.start_date | dateToISO | date :"d MMM yyyy"' ng-model='ctrl.datepicker.start_date', ng-model-options="{ updateOn: 'blur' }")
+                    .col-md-6.col-md-offset-1.strip-padding
+                        label(for='end_date') Ends at
+                        .input-group.full-width(moment-picker='ctrl.datepicker.end_date', min-view='month', ng-model='$singleCampaignCtrl.singleCampaignData.end_date', format='YYYY-MM-DD', today='true', id='end_date')
+                            span.input-group-addon
+                                i.material-icons date_range
+                            input.form-control(placeholder='Select an end date', ng-value='$singleCampaignCtrl.singleCampaignData.end_date | dateToISO | date :"d MMM yyyy"', ng-model='ctrl.datepicker.end_date', ng-model-options="{ updateOn: 'blur' }")
+                .col-md-12
+                    label(for='status' ng-click="$singleCampaignCtrl.test()") Status
+                    select#status.campaign-status(ng-model='$singleCampaignCtrl.singleCampaignData.status')
+                        option(value='active', selected='') Active
+                        option(value='inactive') Inactive
+                .col-md-12
+                    label(for='description') Description
+                    input#description.form-control.input-control(type='text', ng-model='$singleCampaignCtrl.singleCampaignData.description')
+                .col-md-12
+                    label(for='open_jobs') Open Jobs
+                    input#open_jobs.form-control.input-control(type='numeric', ng-model='$singleCampaignCtrl.singleCampaignData.available_jobs')
+
+                .clearfix
+                .errors-panel(ng-repeat='error in $singleCampaignCtrl.editCampaignModal.Error')
+                    p  {{ error[0] }}
+            .modal-footer
+
+                button.btn.btn-success(type='submit', ng-click='$singleCampaignCtrl.editCampaignModal($singleCampaignCtrl.singleCampaignData, $singleCampaignCtrl.singleCampaignData.id)')  Update Campaign
+                button.btn.btn-default(type='button', data-dismiss='modal') Close
+
+
+
+// Edit campaign Modal
+#deleteMyCampaign.modal.fade(role='dialog')
+    .modal-dialog
+        // Modal content
+        .modal-content
+            .modal-header
+                button.close(type='button', data-dismiss='modal') ×
+                h4.modal-title Delete campaign: {{$singleCampaignCtrl.singleCampaignData.name}}
+            .modal-body.edit-campaign
+                p Are you sure do you want to delete this campaign?
+            .modal-footer
+
+                button.btn.btn-danger(type='submit', ng-click='$singleCampaignCtrl.deleteSingleCampaign($singleCampaignCtrl.singleCampaignData, $singleCampaignCtrl.singleCampaignData.id)')  Delete campaign
+                button.btn.btn-default(type='button', data-dismiss='modal') Cancel
+
+
+
+

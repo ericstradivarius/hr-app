@@ -1,0 +1,16 @@
+.menu.col-md-2
+    nav.navbar.navbar-default
+        .container
+            .navbar-header.logo
+                a(href='#') Hirein
+            ul.nav.navbar-nav
+                li(ng-click='$leftMenuCtrl.changeClassCampaigns()', ng-class='$leftMenuCtrl.classCampaigns')
+                    div(ng-class='$leftMenuCtrl.classBorderCampaigns')
+                    a(ng-href='#campaigns')
+                        i.fa.fa-briefcase(aria-hidden='true')
+                        | Campaigns
+                li(ng-click='$leftMenuCtrl.changeClassCandidates()', ng-class='$leftMenuCtrl.classCandidates')
+                    div(ng-class='$leftMenuCtrl.classBorderCandidates')
+                    a(ng-href='#candidates')
+                        i.fa.fa-users(aria-hidden='true')
+                        | Candidates

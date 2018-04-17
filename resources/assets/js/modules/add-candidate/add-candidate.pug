@@ -1,0 +1,48 @@
+.create-campaign.col-md-10.canditates(ng-show='$addCandidateCtrl.headerService.triggerCandidateGet()')
+    .add-campaign-div
+        form#candidate-form.form-inline
+            .col-md-4
+                label(for="candidate_first_name") First name
+                input#candidate_first_name.form-control.input-control(type="text", ng-model="$addCandidateCtrl.candidate_first_name")
+            .col-md-4
+                label(for="candidate_last_name") Last name
+                input#candidate_last_name.form-control.input-control(type="text", ng-model="$addCandidateCtrl.candidate_last_name")
+            .col-md-4
+                label(for="candidate_email") Email
+                input#candidate_email.form-control.input-control(type="email", ng-model="$addCandidateCtrl.candidate_email")
+            .col-md-4
+                label(for="candidate_phone") Phone
+                input#candidate_phone.form-control.input-control(type="tel", ng-model="$addCandidateCtrl.candidate_phone")
+            .col-md-2
+                label(for='status') Stage
+                select#stage.campaign-stage(form='candidate-form', ng-model='$addCandidateCtrl.select_stage')
+                    option(value='CV', selected='') CV
+                    option(value='HR') HR
+                    option(value='Tehnic') Tehnic
+            .col-md-2
+                label(for='status') Status
+                select#status.campaign-status(form='candidate-form', ng-model='$addCandidateCtrl.select_state')
+                    option(value='Waiting', selected='') Waiting
+                    option(value='Accepted') Accepted
+                    option(value='Rejected') Rejected
+            .col-md-4
+                label(for='status') Campaign
+                select#multipleSelect.campaign-status(name='multipleSelect', ng-model='$addCandidateCtrl.multipleSelect')
+                    option(ng-repeat="pickCampaign in $addCandidateCtrl.allCampaignsArray" value="{{pickCampaign.id}}") {{pickCampaign.name}}
+
+            .col-md-4
+                label(for="add_candidate_birthday") Birthday
+                .input-group(moment-picker="ctrl.datepicker", ng-model="$addCandidateCtrl.candidate_dob", start-view="decade",min-view="decade", max-view="month", today="true", format="YYYY-MM-DD")
+                    span.input-group-addon
+                        i.material-icons date_range
+                    input#add_candidate_birthday.form-control(placeholder="Select date of birth", ng-model="ctrl.datepicker",  ng-model-options="{ updateOn: 'blur' }")
+            .col-md-4.cv-class
+                label(for="candidate_cv") CV
+                input#candidate_cv.form-control.input-control(type="file", ng-model="$addCandidateCtrl.candidate_cv", ngf-select, accept="application/pdf", ngf-max-size="2MB" ngf-model-invalid="errorFile" )
+                p(ng-show="$addCandidateCtrl.campaignFileId" class="upload-message ng-hide") Your file has been uploaded !
+            .col-md-4
+                label.label-hidden Button submit
+                button.btn.btn-default(type="submit", ng-click="$addCandidateCtrl.uploadFile($addCandidateCtrl.candidate_cv)")  Add Candidate
+        .clearfix
+    .errors-panel(ng-repeat="error in $addCandidateCtrl.addCandidateErrors")
+        p  {{ error[0] }}

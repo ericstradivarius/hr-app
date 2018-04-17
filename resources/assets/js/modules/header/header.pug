@@ -1,0 +1,79 @@
+.main-side.col-md-10
+    .row.header.padding-sides
+        .col-md-5.col-sm-12.col-xs-12.search-container
+            input.form-control(style='float: left',type='text', ng-model='$headerCtrl.selected', uib-typeahead="item.name for item in $headerCtrl.allItems | filter:$viewValue | limitTo:8" class="form-control",typeahead-no-results="noResults", placeholder='Search', typeahead-on-select="$headerCtrl.onSelect($item, $model, $label)")
+            div(ng-show='noResults')
+                i.glyphicon.glyphicon-remove
+                |  No Results Found
+        .col-md-7.col-sm-12.col-xs-12.user-tabs
+            ul
+                li.user-elements
+                    a.campaign-trigger(ng-click ='$headerCtrl.showAddCampaign = !$headerCtrl.showAddCampaign; $headerCtrl.headerService.triggerCampaignSet($headerCtrl.showAddCampaign)')
+                        i.fa.fa-calendar-plus-o(aria-hidden='true')
+                        span.hidden-tab  Campaign
+                li.user-elements
+                    a.candidate-trigger(ng-click ='$headerCtrl.showAddCandidate = !$headerCtrl.showAddCandidate; $headerCtrl.headerService.triggerCandidateSet($headerCtrl.showAddCandidate)')
+                        i.fa.fa-user-plus(aria-hidden='true')
+                        span.hidden-tab()  Candidate
+                //li.user-elements
+                //    a(href='#')
+                //        i.fa.fa-bell(aria-hidden='true')
+                //        span.hidden-tab  Notification
+                li.user-elements
+                    .dropdown
+                        a(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                            img.header-avatar(ng-src='{{ $headerCtrl.userData.files[0].sizes.header }}', alt='User Avatar')
+                        .dropdown-menu(aria-labelledby='dropdownMenuButton')
+                            a.dropdown-item(href='#') Hi, {{ $headerCtrl.userData.name }} !
+                            a.dropdown-item(href='#', data-toggle='modal', data-target='#editProfileModal')  Edit Profile
+                            a.dropdown-item(href='#', ng-click="$headerCtrl.logout()") Logout
+// Edit Profile Modal
+#editProfileModal.modal.fade(role='dialog')
+    .modal-dialog
+        // Modal content
+        .modal-content
+            .modal-header
+                button.close(type='button', data-dismiss='modal') ×
+                h4.modal-title Edit profile
+            .modal-body
+                form(name='editProfileForm')
+                    .form-group
+                        label(for='user_name') Name
+                        input#user_name.form-control(type='text', aria-describedby='emailHelp', placeholder='Name', ng-model="$headerCtrl.userData.name", required)
+                    .form-group
+                        label(for='email') Email address
+                        input#email.form-control(type='email', aria-describedby='emailHelp', placeholder='Enter email', ng-model="$headerCtrl.userData.email", ng-click='$headerCtrl.headerErrors = false', required)
+                    .form-group
+                        label(for='password') Password
+                        input#password.form-control(type='password', placeholder='Password', ng-model='$headerCtrl.userData.password', name='password')
+                    .form-group
+                        label(for='confirm_password') Confirm password
+                        input#confirm_password.form-control(type='password', placeholder='Password', ng-model='$headerCtrl.userData.password_confirmation')
+                    .form-group
+                        label() Upload avatar picture
+                        input(type='file', ngf-select='', ng-model='$headerCtrl.picFile', name='images', accept='image/*', ngf-max-size='2MB', required='', ngf-model-invalid='errorFile')
+                        i(ng-show='editProfileForm.file.$error.required') *required
+                        i(ng-show='editProfileForm.file.$error.maxSize')
+                            br
+                            | File too large
+                            |                                               @{{ errorFile.size / 1000000|number:1 }}MB: max 2MB
+                        img.avatar-upload(ng-if='$headerCtrl.picFile', ng-show='editProfileForm.file.$valid', ngf-thumbnail='$headerCtrl.picFile', alt='Profile picture')
+                        img.avatar-upload(ng-if='$headerCtrl.userData.files.length && !$headerCtrl.picFile', ng-src='{{$headerCtrl.userData.files[0].sizes.header}}', alt='Current profile picture')
+
+                        span.progress(ng-show='$headerCtrl.picFile.progress >= 0')
+                            div(style='width:{{ $headerCtrl.picFile.progress }}%', ng-bind="$headerCtrl.picFile.progress + '%'")
+                        span(ng-show='$headerCtrl.picFile.result') Upload succesful
+                        span.err(ng-show='$headerCtrl.errorMsg') {{ $headerCtrl.errorMsg }}
+                        span.header-success(ng-if='$headerCtrl.updateSuccess') Your profile has been successfully updated!
+                    .form-group
+                        ul#save-error(ng-show='$headerCtrl.headerErrors')
+                            li(ng-repeat='error in $headerCtrl.headerErrors') {{error[0]}}
+            .modal-footer(ng-if='!$headerCtrl.picFile && $headerCtrl.userData.files.length')
+                button.btn.btn-default(type='button', data-dismiss='modal') Close
+                button.btn.btn-primary(type='submit', ng-click='$headerCtrl.saveUserData($headerCtrl.userData, $headerCtrl.userData.files[0].id)', ng-disabled='!editProfileForm') Save
+            .modal-footer(ng-if='$headerCtrl.picFile')
+                button.btn.btn-default(type='button', data-dismiss='modal') Close
+                button.btn.btn-primary(type='submit', ng-click='$headerCtrl.uploadPic($headerCtrl.picFile, $headerCtrl.userData.id)', ng-disabled='!editProfileForm') Save
+            .modal-footer(ng-if='!$headerCtrl.picFile && !$headerCtrl.userData.files.length')
+                button.btn.btn-default(type='button', data-dismiss='modal') Close
+                button.btn.btn-primary(type='submit', ng-click='$headerCtrl.saveUserDataNoFiles($headerCtrl.userData)', ng-disabled='!editProfileForm') Save

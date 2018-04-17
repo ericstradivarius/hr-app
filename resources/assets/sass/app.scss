@@ -1,0 +1,38 @@
+
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito:300,400,600');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
+@import "~font-awesome/scss/font-awesome";
+
+//Font Awesome
+@import "~font-awesome/scss/font-awesome";
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+// Welcome page
+
+/*** General CSS for the layout ***/
+@import "_general";
+
+/*** left side menu ***/
+@import "_menu";
+
+/*** Search input, avatar and login icons ***/
+@import "_header.scss";
+
+/*** Add new candidates or campaigns ***/
+@import "_add";
+
+/*** Search results page ***/
+@import "_search-results";
+
+/*** List campaigns or items ***/
+@import "_list-items.scss";
+
+@import '~angular-moment-picker/dist/angular-moment-picker.css';
+
+

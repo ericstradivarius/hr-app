@@ -1,0 +1,43 @@
+.content-tables.padding-sides.col-md-10
+       h3 Candidates
+       p Bellow you'll find all candidates for your recruiting campaigns:
+       .table-responsive
+         table.table.table-bordered
+           thead
+             tr
+                 th.candidate-avatar Avatar
+                 th.candidate-name
+                     i.fa.fa-id-card-o(aria-hidden='true') Full name
+                     i.fa.fa-sort(aria-hidden='true', ng-click="$candidatesCtrl.showCandidates($candidatesCtrl.pageNumber,'first_name')")
+                 th.candidate-dob
+                     i.fa.fa-calendar-check-o(aria-hidden='true') Date of birth
+                     i.fa.fa-sort(aria-hidden='true', ng-click="$candidatesCtrl.showCandidates($candidatesCtrl.pageNumber,'dob')")
+                 th.candidate-phone
+                     i.fa.fa-phone(aria-hidden='true') Phone
+                     i.fa.fa-sort(aria-hidden='true', ng-click="$candidatesCtrl.showCandidates($candidatesCtrl.pageNumber,'phone')")
+                 th.candidate-email
+                     i.fa.fa-paper-plane-o(aria-hidden='true') Email
+                     i.fa.fa-sort(aria-hidden='true', ng-click="$candidatesCtrl.showCandidates($candidatesCtrl.pageNumber,'email')")
+                 th.candidate-campaign
+                     i.fa.fa-newspaper-o(aria-hidden='true') Campaign
+                 th.candidate-status
+                     i.fa.fa-crop(aria-hidden='true') Stage
+                     i.fa.fa-sort(aria-hidden='true', ng-click="$candidatesCtrl.showCandidates($candidatesCtrl.pageNumber,'stage')")
+                 th.candidate-status
+                     i.fa.fa-handshake-o(aria-hidden='true') Status
+                     i.fa.fa-sort(aria-hidden='true', ng-click="$candidatesCtrl.showCandidates($candidatesCtrl.pageNumber,'status')")
+           tbody
+             tr(ng-repeat='singleCandidate in $candidatesCtrl.candidatesArray')
+               td.candidate-avatar
+                 generate-initials(initials='singleCandidate.name')
+               td.single-candidate(ui-sref="single-candidate( {id:  {{singleCandidate.id}} } )") {{ singleCandidate.first_name }} {{ singleCandidate.last_name }}
+               td {{ singleCandidate.dob | dateToISO | date : 'd MMM yyyy'}}
+               td {{ singleCandidate.phone }}
+               td {{ singleCandidate.email }}
+               td {{ singleCandidate.campaigns[0].name }}
+               td {{ singleCandidate.stage }}
+               td {{ singleCandidate.status }}
+       .pagination
+         ul
+           li(ng-repeat='number in $candidatesCtrl.candidateNumberOfPages track by $index', ng-click='$candidatesCtrl.showCandidates($index + 1, $candidatesCtrl.propertyName)') {{ number }}
+             a(href='#candidates') {{$index + 1}}

@@ -1,0 +1,59 @@
+section {
+
+  .section-container {
+    padding: 0px;
+  }
+
+  .row{
+    margin:0;
+  }
+
+  .main-side{
+    padding:0;
+    height:100%;
+  }
+
+  .padding-sides{
+    padding-left:30px;
+    padding-right:30px;
+  }
+
+  .section-container{
+
+  }
+
+}
+
+.form-control{
+  color: $dark-blue;
+}
+
+.fluid-container{
+  overflow: hidden;
+}
+
+
+.col-md-10{
+  float: right;
+}
+
+
+h2{
+  display: inline-block;
+}
+
+.page-title{
+  color: $blue;
+  display: inline-block;
+}
+
+@media screen and (max-width: 992px) {
+  .col-md-10{
+    float: none;
+  }
+}
+
+//moment-picker
+.moment-picker {
+  z-index: 99999;
+}

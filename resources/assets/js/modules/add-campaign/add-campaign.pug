@@ -1,0 +1,36 @@
+.create-campaign.col-md-10(ng-show='$addCampaignCtrl.headerService.triggerCampaignGet()')
+    .add-campaign-div
+        form#campaign-form.form-inline
+            .col-md-4
+                label(for='add_campaign_name') Name
+                input#add_campaign_name.form-control.input-control(type='text', ng-model='$addCampaignCtrl.addCampaignName')
+            .col-md-4
+                .col-md-5.strip-padding
+                    label(for='start_date') Starts at
+                    .input-group(moment-picker='ctrl.datepicker_start', min-view='month',ng-model='$addCampaignCtrl.start_date', today='true', format='YYYY-MM-DD')
+                        span.input-group-addon
+                            i.material-icons date_range
+                        input#start_date.form-control(placeholder='Select a date', ng-model='ctrl.datepicker_start', ng-model-options="{ updateOn: 'blur' }")
+                .col-md-6.col-md-offset-1.strip-padding
+                    label(for='end_date') Ends at
+                    .input-group.full-width(moment-picker='ctrl.datepicker_end',ng-model='$addCampaignCtrl.end_date', min-view='month', today='true', format='YYYY-MM-DD')
+                        span.input-group-addon
+                            i.material-icons date_range
+                        input#end_date.form-control(placeholder='Select a date', ng-model='ctrl.datepicker_end', ng-model-options="{ updateOn: 'blur' }")
+            .col-md-4
+                label(for='campaign_status') Status
+                select#campaign_status.campaign-status(form='campaign-form', ng-model='$addCampaignCtrl.select_result')
+                    option(value='active', selected='') Active
+                    option(value='inactive') Inactive
+            .col-md-4
+                label(for='add_campaign_description') Description
+                input#add_campaign_description.form-control.input-control(type='text', ng-model='$addCampaignCtrl.description')
+            .col-md-4
+                label(for='available_jobs') Open Jobs
+                input#available_jobs.form-control.input-control(type='number', ng-model='$addCampaignCtrl.available_jobs')
+            .col-md-4
+                label.label-hidden Button submit
+                button.btn.btn-default(type='submit', ng-click='$addCampaignCtrl.sendCampaign()')  Create Campaign
+        .clearfix
+    .errors-panel(ng-repeat='error in $addCampaignCtrl.addCampaignErrors')
+        p  {{ error[0] }}

@@ -1,0 +1,38 @@
+.content-tables.padding-sides.col-md-10
+    h3 Campaigns
+    p Bellow you'll find all your recruiting campaigns:
+
+    .table-responsive
+        table.table.table-bordered
+            thead
+                tr
+                    th.campaign-name
+                        i.fa.fa-newspaper-o(aria-hidden="true") Campaign name
+                        i.fa.fa-sort(aria-hidden='true', ng-click="$campaignsCtrl.showCampaigns($campaignsCtrl.pageNumber, 'name')")
+                    th.campaign-description
+                        i.fa.fa-bars(aria-hidden='true') Description
+                    th.campaign-period
+                        i.fa.fa-calendar-check-o(aria-hidden='true') Period
+                        i.fa.fa-sort(aria-hidden='true', ng-click="$campaignsCtrl.showCampaigns($campaignsCtrl.pageNumber, 'start_date')")
+                    th.campaign-jobs
+                        i.fa.fa-id-badge(aria-hidden='true') Openings
+                        i.fa.fa-sort(aria-hidden='true', ng-click="$campaignsCtrl.showCampaigns($campaignsCtrl.pageNumber, 'available_jobs')")
+                    th.campaign-candidates
+                        i.fa.fa-user-o(aria-hidden='true') Candidates
+                        i.fa.fa-sort(aria-hidden='true', ng-click="$campaignsCtrl.showCampaigns($campaignsCtrl.pageNumber, 'candidates_total')")
+                    th.campaign-status
+                        i.fa.fa-check(aria-hidden='true') Status
+                        i.fa.fa-sort(aria-hidden='true', ng-click="$campaignsCtrl.showCampaigns($campaignsCtrl.pageNumber, 'status')")
+            tbody
+                tr.single-campaign(ng-repeat='singleCampaign in $campaignsCtrl.campaignAndCandidates' ui-sref="single-campaign({id: {{singleCampaign.id}}})")
+                    td(ng-click='$campaignsCtrl.openSingleCampaign(singleCampaign.id, 1)') {{  singleCampaign.name }}
+                    td {{ singleCampaign.description }}
+                    td
+                        | {{ singleCampaign.start_date | dateToISO | date : 'd MMM yyyy'}} - {{ singleCampaign.end_date | dateToISO | date : 'd MMM yyyy'}}
+                    td {{ singleCampaign.available_jobs }}
+                    td {{ singleCampaign.candidates_total }}
+                    td {{ singleCampaign.status }}
+    .pagination
+        ul
+            li(ng-repeat='number in $campaignsCtrl.campainNumberOfPages track by $index', ng-click='$campaignsCtrl.showCampaigns($index + 1, $campaignsCtrl.propertyName)')
+                a(href='#') {{$index + 1}}

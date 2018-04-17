@@ -1,0 +1,44 @@
+//fluid-container
+.fluid-container {
+
+  .content-tables {
+
+    .search-results-header, .search-results-item {
+      text-align: left;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+    .search-results-header {
+      text-transform: uppercase;
+      font-weight: bold;
+
+      .search-results-col {
+        border-top-width: 1px !important;
+      }
+    }
+
+    .search-results-col:first-child {
+      border-left-width: 1px !important;
+    }
+
+    .search-results-col {
+      background: #ffffff;
+      padding: 20px 30px;
+      border-style: solid;
+      border-right-width: 1px;
+      border-bottom-width: 1px;
+      border-left-width: 0px;
+      border-top-width: 0px;
+      border-color: #c2d1e8;
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: #7d8dab;
+      vertical-align: middle;
+    }
+  }
+}
+
+.search-message {
+  margin-bottom: 52px;
+}
